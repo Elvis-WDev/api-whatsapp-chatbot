@@ -14,4 +14,8 @@ export const envs = {
 
     JWT_SEED: get('JWT_SEED').required().asString(),
 
+    WHATSAPP_DATA_PATH: get('WHATSAPP_DATA_PATH').required().asString(),
+
+    AI21_API_URL: get('AI21_API_URL').required().asString(),
+    AI21_API_KEY: get('AI21_API_KEY').required().asString(),
 }

@@ -1,5 +1,11 @@
+
 import { Router } from 'express';
-import { Authroutes } from './auth/routes';
+import { Authroutes } from '.././/presentation';
+import { WhatssapApiRoutes } from '../presentation';
+// import { ImageRoutes } from '../presentation';
+import { AuthMiddleware } from '../presentation';
+import { CommandRoutes } from './controllers/commands/routes';
+
 
 export class AppRoutes {
 
@@ -9,6 +15,9 @@ export class AppRoutes {
 
         // Definir las rutas
         router.use('/api/auth', Authroutes.routes);
+        router.use('/api/whatsapp', [AuthMiddleware.validateJWT], WhatssapApiRoutes.routes);
+        router.use('/api/command', [AuthMiddleware.validateJWT], CommandRoutes.routes);
+
 
         return router;
     }

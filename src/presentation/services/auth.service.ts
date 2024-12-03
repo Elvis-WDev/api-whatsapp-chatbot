@@ -1,53 +1,13 @@
 
 
-import { JwtAdapter, bcryptAdapter } from '../../config';
 import { prisma } from '../../data';
-import { CustomError, LoginUserDto, RegisterUserDto, UserEntity } from '../../domain';
+import { JwtAdapter, bcryptAdapter } from '../../config';
+import { CustomError, LoginUserDto, UserEntity } from '../../domain';
 
 export class AuthService {
 
     // DI
     constructor() { }
-
-    public async registerUser(registerUserDto: RegisterUserDto) {
-
-        const existUser = await prisma.user.findUnique({
-            where: {
-                email: registerUserDto.email
-            },
-        })
-
-        if (existUser) throw CustomError.badRequest('Email already exist');
-
-        try {
-
-            // Encriptar la contraseña
-            const userHashed = { ...registerUserDto, password: bcryptAdapter.hash(registerUserDto.password) };
-
-            // Crear el usuario
-            const user = await prisma.user.create({
-                data: userHashed
-            })
-
-            // Apartar datos de la contraseña
-            const { password, ...userEntity } = UserEntity.fromObject(user);
-
-            // JWT <---- para mantener la autenticación del usuario
-            const token = await JwtAdapter.generateToken({ id: user.id, email: user.email });
-
-            if (!token) throw CustomError.internalServer('Error while creating JWT');
-
-            return {
-                user: userEntity,
-                token: token
-            };
-
-        } catch (error) {
-            throw CustomError.internalServer(`${error}`);
-        }
-
-    }
-
 
     public async loginUser(loginUserDto: LoginUserDto) {
 
@@ -57,12 +17,12 @@ export class AuthService {
             },
         })
 
-        if (!user) throw CustomError.badRequest('Email not exist');
+        if (!user) throw CustomError.unauthorized('Email not found');
 
         // Comparar la contraseña
         const isMatching = bcryptAdapter.compare(loginUserDto.password, user.password);
 
-        if (!isMatching) throw CustomError.badRequest('Password is not valid');
+        if (!isMatching) throw CustomError.unauthorized('Password incorrect');
 
         const token = await JwtAdapter.generateToken({ id: user.id, email: user.email });
 
@@ -71,13 +31,12 @@ export class AuthService {
         if (!token) throw CustomError.internalServer('Error while creating JWT');
 
         return {
+            success: true,
             user: userEntity,
             token: token,
+            message: 'User logged in successfully'
         }
 
-
-
     }
-
 
 }

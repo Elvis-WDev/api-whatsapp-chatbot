@@ -13,6 +13,8 @@ async function main() {
     // PostgreSQL connection
     await prisma.$connect();
 
+    console.log('Database connected')
+
     // Starting server
     const server = new Server({
         port: envs.PORT,

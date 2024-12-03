@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "nodemon",
     "build": "rimraf ./dist && tsc",
-    "start": "npm run build && node dist/app.js"
+    "start": "npm run build && node dist/app.js",
+    "seed": "ts-node-dev ./src/data/seeder/database.seeder.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,20 +14,34 @@
   "description": "",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/fs-extra": "^11.0.4",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.7.5",
+    "@types/qrcode": "^1.5.5",
+    "@types/qrcode-terminal": "^0.12.2",
     "nodemon": "^3.1.7",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@prisma/client": "^5.20.0",
+    "@prisma/client": "^5.21.1",
+    "@wppconnect-team/wppconnect": "^1.35.1",
+    "@wppconnect/wa-js": "^3.14.0",
+    "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "env-var": "^7.5.0",
     "express": "^4.21.1",
-    "jsonwebtoken": "^9.0.2"
+    "fs-extra": "^11.2.0",
+    "good-logs": "^1.2.6",
+    "jsonwebtoken": "^9.0.2",
+    "playwright-chromium": "^1.48.2",
+    "qrcode": "^1.5.4",
+    "qrcode-terminal": "^0.12.0"
   }
 }

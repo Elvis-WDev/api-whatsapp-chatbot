@@ -1,14 +1,11 @@
 
 
 import { Router } from 'express';
+import { AuthService } from '../../services/auth.service';
 import { AuthController } from './controller';
-import { AuthService } from '../services/auth.service';
-
-
 
 
 export class Authroutes {
-
 
     static get routes(): Router {
 
@@ -19,11 +16,6 @@ export class Authroutes {
 
         // Definir las rutas
         router.post('/login', authController.loginUser);
-        router.post('/register', authController.registerUser);
-
-        router.get('/validate-email/:token', authController.validateEmail);
-
-
 
         return router;
     }

@@ -1,12 +1,14 @@
-import express, { Router } from 'express';
 import path from 'path';
+import express, { Router } from 'express';
+import cors from 'cors';
+import fs from 'fs';
+import { envs } from '../config';
 
 interface Options {
     port: number;
     routes: Router;
     public_path?: string;
 }
-
 
 export class Server {
 
@@ -25,10 +27,16 @@ export class Server {
 
     async start() {
 
+        //* Habilitar CORS
+        this.app.use(cors({
+            origin: '*',
+            methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+        }));
 
         //* Middlewares
-        this.app.use(express.json()); // raw
-        this.app.use(express.urlencoded({ extended: true })); // x-www-form-urlencoded
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
 
         //* Public Folder
         this.app.use(express.static(this.publicPath));
@@ -42,16 +50,25 @@ export class Server {
             res.sendFile(indexPath);
         });
 
+        this.InitiWhatsappClient();
 
         this.serverListener = this.app.listen(this.port, () => {
             console.log(`Server running on port ${this.port}`);
         });
 
+
+    }
+
+    public async InitiWhatsappClient() {
+        if (fs.existsSync(`${envs.WHATSAPP_DATA_PATH}`)) {
+            fs.rmSync(`${envs.WHATSAPP_DATA_PATH}`, { recursive: true, force: true });
+        }
     }
 
     public close() {
         this.serverListener?.close();
     }
+
 
 }
 
