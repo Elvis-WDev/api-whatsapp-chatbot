@@ -40,10 +40,12 @@ Este proyecto previamente inicializado tiene todo lo necesario para trabajar con
             ports:
             - 5432:5432
 ```
-5. Ejecutar `docker-compose up -d` para levantar los servicios deseados.
+5. Ejecutar `docker compose up -d` para levantar los servicios deseados.
 
-6. Ejecutar `npx prisma migrate dev --name init` para migrar tablas a la base de datos.
+6. Ejecutar `npm install @prisma/client` para instalar Prisma client
 
-7. Ejecutar `npm run dev` para levantar el proyecto en modo desarrollo.
+7. Ejecutar `npx prisma migrate dev --name init` para migrar tablas a la base de datos.
 
-7. Abrir el naevgador en `localhost:3000`
+8. Ejecutar `npm run dev` para levantar el proyecto en modo desarrollo.
+
+9. Abrir el naevgador en `localhost:3000`
